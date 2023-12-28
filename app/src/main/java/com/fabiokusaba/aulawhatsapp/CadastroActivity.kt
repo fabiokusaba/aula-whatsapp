@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.fabiokusaba.aulawhatsapp.databinding.ActivityCadastroBinding
+import com.fabiokusaba.aulawhatsapp.model.Usuario
 import com.fabiokusaba.aulawhatsapp.utils.exibirMensagem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.firestore.FirebaseFirestore
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -18,6 +20,10 @@ class CadastroActivity : AppCompatActivity() {
 
     private val firebaseAuth by lazy {
         FirebaseAuth.getInstance()
+    }
+
+    private val firestore by lazy {
+        FirebaseFirestore.getInstance()
     }
 
     private lateinit var nome: String
@@ -45,11 +51,12 @@ class CadastroActivity : AppCompatActivity() {
             email, senha
         ).addOnCompleteListener { resultado ->
             if (resultado.isSuccessful) {
-                exibirMensagem("Sucesso ao fazer o seu cadastro")
+                val idUsuario = resultado.result.user?.uid
 
-                startActivity(
-                    Intent(applicationContext, MainActivity::class.java)
-                )
+                if (idUsuario != null) {
+                    val usuario = Usuario(idUsuario, nome, email)
+                    salvarUsuarioFirestore(usuario)
+                }
             }
         }.addOnFailureListener { erro ->
             try {
@@ -67,6 +74,21 @@ class CadastroActivity : AppCompatActivity() {
                 exibirMensagem("E-mail inválido, digite um outro e-mail")
             }
         }
+    }
+
+    private fun salvarUsuarioFirestore(usuario: Usuario) {
+        firestore
+            .collection("usuarios")
+            .document(usuario.id)
+            .set(usuario)
+            .addOnSuccessListener {
+                exibirMensagem("Sucesso ao fazer o seu cadastro")
+                startActivity(
+                    Intent(applicationContext, MainActivity::class.java)
+                )
+            }.addOnFailureListener {
+                exibirMensagem("Erro ao fazer o seu cadastro")
+            }
     }
 
     private fun valirdarCampos(): Boolean {
