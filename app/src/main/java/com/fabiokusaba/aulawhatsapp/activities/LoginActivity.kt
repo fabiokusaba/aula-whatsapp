@@ -1,4 +1,4 @@
-package com.fabiokusaba.aulawhatsapp
+package com.fabiokusaba.aulawhatsapp.activities
 
 import android.content.Intent
 import android.os.Bundle

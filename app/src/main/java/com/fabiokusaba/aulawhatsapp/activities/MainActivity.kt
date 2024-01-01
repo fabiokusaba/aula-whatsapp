@@ -1,4 +1,4 @@
-package com.fabiokusaba.aulawhatsapp
+package com.fabiokusaba.aulawhatsapp.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import com.fabiokusaba.aulawhatsapp.R
 import com.fabiokusaba.aulawhatsapp.adapters.ViewPagerAdapter
 import com.fabiokusaba.aulawhatsapp.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
