@@ -10,7 +10,7 @@ import com.fabiokusaba.aulawhatsapp.model.Mensagem
 import com.fabiokusaba.aulawhatsapp.utils.Constantes
 import com.google.firebase.auth.FirebaseAuth
 
-class ConversasAdapter : Adapter<ViewHolder>() {
+class MensagensAdapter : Adapter<ViewHolder>() {
     private var listaMensagens = emptyList<Mensagem>()
 
     fun adicionarLista(lista: List<Mensagem>) {

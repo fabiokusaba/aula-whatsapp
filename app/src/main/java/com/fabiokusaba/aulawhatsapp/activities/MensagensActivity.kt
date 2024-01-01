@@ -4,7 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fabiokusaba.aulawhatsapp.adapters.ConversasAdapter
+import com.fabiokusaba.aulawhatsapp.adapters.MensagensAdapter
 import com.fabiokusaba.aulawhatsapp.databinding.ActivityMensagensBinding
 import com.fabiokusaba.aulawhatsapp.model.Conversa
 import com.fabiokusaba.aulawhatsapp.model.Mensagem
@@ -33,7 +33,7 @@ class MensagensActivity : AppCompatActivity() {
     private lateinit var listenerRegistration: ListenerRegistration
     private var dadosDestinatario: Usuario? = null
     private var dadosUsuarioRemetente: Usuario? = null
-    private lateinit var conversasAdapter: ConversasAdapter
+    private lateinit var conversasAdapter: MensagensAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +48,7 @@ class MensagensActivity : AppCompatActivity() {
 
     private fun inicializarRecyclerView() {
         with(binding) {
-            conversasAdapter = ConversasAdapter()
+            conversasAdapter = MensagensAdapter()
             rvMensagens.adapter = conversasAdapter
             rvMensagens.layoutManager = LinearLayoutManager(applicationContext)
         }
