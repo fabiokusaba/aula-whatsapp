@@ -18,6 +18,7 @@ import com.fabiokusaba.aulawhatsapp.utils.exibirMensagem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 
 class ConversasFragment : Fragment() {
     private lateinit var binding: FragmentConversasBinding
@@ -83,6 +84,7 @@ class ConversasFragment : Fragment() {
                 .collection(Constantes.CONVERSAS)
                 .document(idUsuarioRemetente)
                 .collection(Constantes.ULTIMAS_CONVERSAS)
+                .orderBy("data", Query.Direction.DESCENDING)
                 .addSnapshotListener { querySnapshot, error ->
                     if (error != null) {
                         activity?.exibirMensagem("Erro ao recuperar conversas")
