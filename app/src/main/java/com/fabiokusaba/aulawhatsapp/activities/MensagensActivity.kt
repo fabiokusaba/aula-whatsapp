@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fabiokusaba.aulawhatsapp.databinding.ActivityMensagensBinding
 import com.fabiokusaba.aulawhatsapp.model.Usuario
 import com.fabiokusaba.aulawhatsapp.utils.Constantes
+import com.squareup.picasso.Picasso
 
 class MensagensActivity : AppCompatActivity() {
     private val binding by lazy {
@@ -19,6 +20,22 @@ class MensagensActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         recuperarDadosUsuarioDestinatario()
+        inicializarToolbar()
+    }
+
+    private fun inicializarToolbar() {
+        val toolbar = binding.tbMensagens
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            title = ""
+            if (dadosDestinatario != null) {
+                binding.textNome.text = dadosDestinatario!!.nome
+                Picasso.get()
+                    .load(dadosDestinatario!!.foto)
+                    .into(binding.imageFotoPerfil)
+            }
+            setDisplayHomeAsUpEnabled(true)
+        }
     }
 
     private fun recuperarDadosUsuarioDestinatario() {
