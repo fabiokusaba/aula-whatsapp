@@ -1,5 +1,6 @@
 package com.fabiokusaba.aulawhatsapp.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.fabiokusaba.aulawhatsapp.activities.MensagensActivity
 import com.fabiokusaba.aulawhatsapp.adapters.ContatosAdapter
 import com.fabiokusaba.aulawhatsapp.databinding.FragmentContatosBinding
 import com.fabiokusaba.aulawhatsapp.model.Usuario
+import com.fabiokusaba.aulawhatsapp.utils.Constantes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -36,7 +39,12 @@ class ContatosFragment : Fragment() {
             inflater, container, false
         )
 
-        contatosAdapter = ContatosAdapter()
+        contatosAdapter = ContatosAdapter { usuario ->
+            val intent = Intent(context, MensagensActivity::class.java)
+            intent.putExtra("dadosDestinatario", usuario)
+            intent.putExtra("origem", Constantes.ORIGEM_CONTATO)
+            startActivity(intent)
+        }
         binding.rvContatos.adapter = contatosAdapter
         binding.rvContatos.layoutManager = LinearLayoutManager(context)
         binding.rvContatos.addItemDecoration(

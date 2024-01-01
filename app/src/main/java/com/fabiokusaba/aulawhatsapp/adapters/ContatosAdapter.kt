@@ -8,7 +8,9 @@ import com.fabiokusaba.aulawhatsapp.databinding.ItemContatosBinding
 import com.fabiokusaba.aulawhatsapp.model.Usuario
 import com.squareup.picasso.Picasso
 
-class ContatosAdapter : Adapter<ContatosAdapter.ContatosViewHolder>() {
+class ContatosAdapter(
+    private val onClick: (Usuario) -> Unit
+) : Adapter<ContatosAdapter.ContatosViewHolder>() {
     private var listaContatos = emptyList<Usuario>()
     fun adicionarLista(lista: List<Usuario>) {
         listaContatos = lista
@@ -23,6 +25,11 @@ class ContatosAdapter : Adapter<ContatosAdapter.ContatosViewHolder>() {
             Picasso.get()
                 .load(usuario.foto)
                 .into(binding.imageContatoFoto)
+
+            //Evento de clique
+            binding.clItemContato.setOnClickListener {
+                onClick(usuario)
+            }
         }
     }
 
