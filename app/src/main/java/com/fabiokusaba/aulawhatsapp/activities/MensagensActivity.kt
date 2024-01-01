@@ -10,6 +10,8 @@ import com.fabiokusaba.aulawhatsapp.utils.Constantes
 import com.fabiokusaba.aulawhatsapp.utils.exibirMensagem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.squareup.picasso.Picasso
 
 class MensagensActivity : AppCompatActivity() {
@@ -25,6 +27,8 @@ class MensagensActivity : AppCompatActivity() {
         FirebaseFirestore.getInstance()
     }
 
+    private lateinit var listenerRegistration: ListenerRegistration
+
     private var dadosDestinatario: Usuario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +38,46 @@ class MensagensActivity : AppCompatActivity() {
         recuperarDadosUsuarioDestinatario()
         inicializarToolbar()
         inicializarEventoClique()
+        inicializarListeners()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        listenerRegistration.remove()
+    }
+
+    private fun inicializarListeners() {
+        val idUsuarioRemetente = firebaseAuth.currentUser?.uid
+        val idUsuarioDestinatario = dadosDestinatario?.id
+
+        if (idUsuarioRemetente != null && idUsuarioDestinatario != null) {
+            listenerRegistration = firestore
+                .collection(Constantes.BD_MENSAGENS)
+                .document(idUsuarioRemetente)
+                .collection(idUsuarioDestinatario)
+                .orderBy("data", Query.Direction.ASCENDING)
+                .addSnapshotListener { querySnapshot, erro ->
+                    if (erro != null) {
+                        exibirMensagem("Erro ao recuperar mensagens")
+                    }
+
+                    val listaMensagens = mutableListOf<Mensagem>()
+                    val documentos = querySnapshot?.documents
+
+                    documentos?.forEach { documentSnapshot ->
+                        val mensagem = documentSnapshot.toObject(Mensagem::class.java)
+
+                        if (mensagem != null) {
+                            listaMensagens.add(mensagem)
+                        }
+                    }
+
+                    //Lista
+                    if (listaMensagens.isNotEmpty()) {
+                        //Carregar os dados Adapter
+                    }
+                }
+        }
     }
 
     private fun inicializarEventoClique() {
